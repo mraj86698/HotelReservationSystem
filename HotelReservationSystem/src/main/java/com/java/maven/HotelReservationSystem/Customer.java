@@ -2,10 +2,11 @@ package com.java.maven.HotelReservationSystem;
 
 public class Customer extends Hotel {
 
-	public String cust_type="regular";
+	public String custType;
 	public int DaysStayed;
 	public int bill;
-
+	public int rateWeekday;
+	public int rateWeekend;
 	/**
 	 * To Creating Parameterised Constructor
 	 * @param hotelName
@@ -32,13 +33,23 @@ public class Customer extends Hotel {
 	 * @return
 	 */
 
-	public String getCust_type() {
-		return cust_type;
+	public String getCustType() {
+		return custType;
 	}
 
-	public void setCust_type(String cust_type) {
-		this.cust_type = cust_type;
+	public void setCustType(String type, Hotel hotel) {
+		if (type=="regular") {
+			this.custType="Regular";
+			this.rateWeekday=hotel.rateWeekdayRegular;
+			this.rateWeekendRegular=hotel.rateWeekendRegular;
+		}
+		else if(type=="reward") {
+			this.custType="Reward";
+			this.rateWeekday=hotel.rateWeekdayReward;
+			this.rateWeekendReward=hotel.rateWeekendReward;
+		}
 	}
+
 
 	public int getDaysStayed() {
 		return DaysStayed;

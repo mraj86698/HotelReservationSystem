@@ -36,14 +36,16 @@ public class HotelReservation {
 	 * @param rate_regular
 	 * @return
 	 */
-	public boolean addHotel(String hotelName, int rateWeekdayRegular,int rateWeekendRegular,int rating) {
+	public boolean addHotel(String hotelName, int rateWeekdayRegular,int rateWeekendRegular,int rateWeekdayReward,int rateWeekendReward, int rating) {
 
 		Hotel hotel = new Hotel(hotelName,rateWeekdayRegular);
 		hotel.setWeekendRates(rateWeekendRegular);
+		hotel.addRewardRate(rateWeekdayReward, rateWeekendReward);
 		hotel.addRating(rating);
 		addToList(hotel);
 		return true;
 	}
+
 
 	/**
 	 * Display Hotel List
@@ -124,7 +126,6 @@ public Customer bestRatedHotel(String start_date, String end_date) {
 
 		return new Customer(cheapestHotel.hotelName, daysStayed, bill);
 	}
-
 	/**
 	 * Ability to find the Cheapest Hotel for given date range
 	 * @param start_date
@@ -159,15 +160,16 @@ public Customer findCheapestHotel(String start_date, String end_date) {
 }
 
 
+
 	public static void main(String[] args) {
 
 		/**
 		 * Default Entries Weekly and WeekEnd Rates per day
 		 */
 		HotelReservation obj = new HotelReservation();
-		obj.addHotel("Lakewood", 110,90,3);
-		obj.addHotel("Bridgewood", 160,50,4);
-		obj.addHotel("Ridgewood", 220,150,5);
+		obj.addHotel("Lakewood", 110,90,80,80,3);
+		obj.addHotel("Bridgewood", 160,50,110,50,4);
+		obj.addHotel("Ridgewood", 220,150,100,40,5);
 		while(true) {
 
 		 System.out.println( "Welcome to Hotel Reservation Program" );
@@ -177,12 +179,13 @@ public Customer findCheapestHotel(String start_date, String end_date) {
 	        System.out.println();
 
 	        System.out.println("What do you want to do?");
-	        System.out.println("1. Add Hotel Entry.");
-	        System.out.println("2. Find Cheapest Hotel.");
-	        String user_input=sc.next();
+			System.out.println("1. Add Hotel Entry.");
+			System.out.println("2. Find Cheapest Hotel.");
+			System.out.println("3. Find Best Rated Hotel.");
+			String user_input=sc.next();
 
-	        //Initializing main program
-	        switch(user_input) {
+			//Initializing main program
+			switch(user_input) {
 
 			case "1": {
 				System.out.println("Please add hotel.");
@@ -191,14 +194,16 @@ public Customer findCheapestHotel(String start_date, String end_date) {
 				String hotelName = sc.next();
 				System.out.print("Enter regular rate of rooms: ");
 				int rateWeekdayRegular = sc.nextInt();
-				System.out.print("Enter WeekDay rate of rooms: ");
-				int rateWeekday = sc.nextInt();
 				System.out.print("Enter Weekend rate of rooms: ");
 				int rateWeekendRegular = sc.nextInt();
+				System.out.print("Enter reward Weekday rate of rooms: ");
+				int rateWeekdayReward = sc.nextInt();
+				System.out.print("Enter reward Weekend rate of rooms: ");
+				int rateWeekendReward = sc.nextInt();
 				System.out.print("Enter Rating of Hotel: ");
 				int rating = sc.nextInt();
 
-				obj.addHotel(hotelName, rateWeekdayRegular, rateWeekendRegular, rating);
+				obj.addHotel(hotelName, rateWeekdayRegular, rateWeekendReward,rateWeekdayRegular,rateWeekendReward, rating);
 				break;
 			}
 			case "2": {
@@ -208,6 +213,17 @@ public Customer findCheapestHotel(String start_date, String end_date) {
 				System.out.println("Enter Check-Out date: ");
 				String end_date = sc.next();
 				Customer cust = obj.findCheapestHotel(start_date,end_date);
+
+				cust.showBill();
+				break;
+			}
+			case "3": {
+				System.out.println("Enter date range to find hotel in format(DD.MM.yyyy)");
+				System.out.println("Enter Check-In date: ");
+				String start_date = sc.next();
+				System.out.println("Enter Check-Out date: ");
+				String end_date = sc.next();
+				Customer cust = obj.bestRatedHotel(start_date,end_date);
 
 				cust.showBill();
 				break;

@@ -2,11 +2,14 @@ package com.java.maven.HotelReservationSystem;
 
 public class Hotel {
 
-	public String hotelName;
+	public String hotelName;				//Obj Attributes
+	public int rating;
 	public int rateWeekdayRegular;
 	public int rateWeekendRegular;
-	public int  totalBill=0;
-	public int rating;
+	public int rateWeekdayReward;
+	public int rateWeekendReward;
+	public int totalBill=0;
+
 
 	/**
 	 * Create a Parameterised Constructor
@@ -33,6 +36,14 @@ public class Hotel {
 		this.rating=rating;
 		System.out.println("Rating "+rating+" stars added.");
 	}
+	public void addRewardRate(int rateWeekdayReward,int rateWeekendReward) {
+		this.rateWeekdayReward=rateWeekdayReward;
+		this.rateWeekendReward=rateWeekendReward;
+		System.out.println("Reward Weekday/Weekend Rates Updated");
+	}
+	public int getRating() {
+		return (-1)*rating;
+	}
 
 	public void display() {
 
@@ -40,6 +51,8 @@ public class Hotel {
 		System.out.println("Hotel Name: "+hotelName);
 		System.out.println("Regular Weekday Rate: "+rateWeekdayRegular);
 		System.out.println("Regular Weekend Rate: "+rateWeekendRegular);
+		System.out.println("Reward Weekday Rate: "+rateWeekdayReward);
+		System.out.println("Reward Weekend Rate: "+rateWeekendReward);
 		System.out.println("------------------------------------------------------");
 		System.out.println();
 	}
@@ -69,8 +82,18 @@ public class Hotel {
 		return totalBill;
 	}
 
-	public int getRating() {
-		return rating;
+
+	public int getRateWeekdayReward() {
+		return rateWeekdayReward;
+	}
+	public void setRateWeekdayReward(int rateWeekdayReward) {
+		this.rateWeekdayReward = rateWeekdayReward;
+	}
+	public int getRateWeekendReward() {
+		return rateWeekendReward;
+	}
+	public void setRateWeekendReward(int rateWeekendReward) {
+		this.rateWeekendReward = rateWeekendReward;
 	}
 
 }
