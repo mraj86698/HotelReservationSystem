@@ -36,10 +36,11 @@ public class HotelReservation {
 	 * @param rate_regular
 	 * @return
 	 */
-	public boolean addHotel(String hotelName, int rateWeekdayRegular,int rateWeekendRegular) {
+	public boolean addHotel(String hotelName, int rateWeekdayRegular,int rateWeekendRegular,int rating) {
 
 		Hotel hotel = new Hotel(hotelName,rateWeekdayRegular);
 		hotel.setWeekendRates(rateWeekendRegular);
+		hotel.addRating(rating);
 		addToList(hotel);
 		return true;
 	}
@@ -129,9 +130,9 @@ public class HotelReservation {
 		 * Default Entries Weekly and WeekEnd Rates per day
 		 */
 		HotelReservation obj = new HotelReservation();
-		obj.addHotel("Lakewood", 110,90);
-		obj.addHotel("Bridgewood", 160,50);
-		obj.addHotel("Ridgewood", 220,150);
+		obj.addHotel("Lakewood", 110,90,3);
+		obj.addHotel("Bridgewood", 160,50,4);
+		obj.addHotel("Ridgewood", 220,150,5);
 		while(true) {
 
 		 System.out.println( "Welcome to Hotel Reservation Program" );
@@ -159,8 +160,10 @@ public class HotelReservation {
 //	            int rateWeekday = sc.nextInt();
 	            System.out.print("Enter Weekend rate of rooms: ");
 	            int rateWeekendRegular = sc.nextInt();
+	            System.out.print("Enter Rating of Hotel: ");
+	            int rating = sc.nextInt();
 
-	            obj.addHotel(hotelName, rateWeekdayRegular,rateWeekendRegular);
+	            obj.addHotel(hotelName, rateWeekdayRegular,rateWeekendRegular,rating);
 	            if(true)
 	            	System.out.println("Added Hotel");
 	            else

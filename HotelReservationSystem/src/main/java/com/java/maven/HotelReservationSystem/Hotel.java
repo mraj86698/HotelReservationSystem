@@ -6,6 +6,7 @@ public class Hotel {
 	public int rateWeekdayRegular;
 	public int rateWeekendRegular;
 	public int  totalBill=0;
+	public int rating;
 
 	/**
 	 * Create a Parameterised Constructor
@@ -28,6 +29,10 @@ public class Hotel {
 		return "Hotel  "+hotelName+" created";
 	}
 
+	public void addRating(int rating) {
+		this.rating=rating;
+		System.out.println("Rating "+rating+" stars added.");
+	}
 
 	public void display() {
 
@@ -63,8 +68,5 @@ public class Hotel {
 	public int getTotalBill() {
 		return totalBill;
 	}
-	public void showBill() {
-		// TODO Auto-generated method stub
 
-	}
 }
