@@ -69,4 +69,8 @@ public class Hotel {
 		return totalBill;
 	}
 
+	public int getRating() {
+		return rating;
+	}
+
 }

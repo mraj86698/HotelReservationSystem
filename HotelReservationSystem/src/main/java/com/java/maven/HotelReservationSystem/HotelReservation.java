@@ -95,34 +95,36 @@ public class HotelReservation {
 	 * @return
 	 */
 
-	 public Customer findCheapestHotel(String start_date, String end_date) {
+public Customer findCheapestHotel(String start_date, String end_date) {
 
-	    	try {
-				Date startDate= new SimpleDateFormat("DD.MM.yyyy").parse(start_date);
-				Date endDate= new SimpleDateFormat("DD.MM.yyyy").parse(end_date);
+    	try {
+			Date startDate= new SimpleDateFormat("DD.MM.yyyy").parse(start_date);
+			Date endDate= new SimpleDateFormat("DD.MM.yyyy").parse(end_date);
 
-				int daysStayed=daysRented(startDate, endDate);
-		    	int noOfWeekdays=checkWeekdayWeekend(startDate, endDate)[0];
-		    	int noOfWeekends=checkWeekdayWeekend(startDate, endDate)[1];
+			int daysStayed=daysRented(startDate, endDate);
+	    	int noOfWeekdays=checkWeekdayWeekend(startDate, endDate)[0];
+	    	int noOfWeekends=checkWeekdayWeekend(startDate, endDate)[1];
 
-		    	for(Hotel hotel: hotelList) {
-		        	int totalBill = noOfWeekdays*hotel.rateWeekdayRegular+noOfWeekends*hotel.rateWeekendRegular;
-		        	hotel.totalBill=totalBill;
-		        }
+	    	for(Hotel hotel: hotelList) {
+	        	int totalBill = noOfWeekdays*hotel.rateWeekdayRegular+noOfWeekends*hotel.rateWeekendRegular;
+	        	hotel.totalBill=totalBill;
+	        }
 
-		    	Optional<Hotel> cheapestHotelOpt = hotelList.stream().min(Comparator.comparingInt(
-		    			Hotel::getTotalBill));
+	    	Optional<Hotel> cheapestHotelOpt = hotelList.stream().min((Comparator.comparingInt(
+	    			Hotel::getTotalBill)
+	    			.thenComparing(Hotel::getRating))
+	    			);
 
-		    	Hotel cheapestHotel = cheapestHotelOpt.get();
-		    	int bill=daysStayed*cheapestHotel.getrateWeekdayRegular();
+	    	Hotel cheapestHotel = cheapestHotelOpt.get();
+	    	int bill=daysStayed*cheapestHotel.getrateWeekdayRegular();
 
-		    	return new Customer(cheapestHotel.hotelName, daysStayed, bill);
+	    	return new Customer(cheapestHotel.hotelName, daysStayed, bill);
 
-	    	}catch(ParseException exception){
-				exception.printStackTrace();
-			}
-	    	return null;
+    	}catch(ParseException exception){
+			exception.printStackTrace();
 		}
+    	return null;
+	}
 
 	public static void main(String[] args) {
 
