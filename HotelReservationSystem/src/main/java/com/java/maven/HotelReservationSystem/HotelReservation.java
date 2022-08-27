@@ -29,15 +29,16 @@ public class HotelReservation {
 	}
 
 	/**
-	 * Add Hotel for HotelName,RegularRate,CustomerType
+	 * Ability to  add WeekDay and each WeekEnd Rates for each Hotel
 	 *
 	 * @param hotelName
 	 * @param rate_regular
 	 * @return
 	 */
-	public boolean addHotel(String hotelName, int rate_regular) {
+	public boolean addHotel(String hotelName, int rateWeekdayRegular,int rateWeekendRegular) {
 
-		Hotel hotel = new Hotel(hotelName, rate_regular);
+		Hotel hotel = new Hotel(hotelName,rateWeekdayRegular);
+		hotel.setWeekendRates(rateWeekendRegular);
 		addToList(hotel);
 		return true;
 	}
@@ -73,6 +74,7 @@ public class HotelReservation {
 	}
 	/**
 	 * Ability to find the Cheapest Hotel for given date range
+	 * Input:10/09/2020,Output:11
 	 * @param start_date
 	 * @param end_date
 	 * @return
@@ -82,10 +84,10 @@ public class HotelReservation {
 
 		int daysStayed = daysRented(start_date, end_date);
 		Optional<Hotel> cheapestHotelOpt = hotelList.stream()
-				.min(Comparator.comparing(Hotel::getRate_regular));
+				.min(Comparator.comparing(Hotel::getrateWeekdayRegular));
 
 		Hotel cheapestHotel = cheapestHotelOpt.get();
-		int bill = daysStayed * cheapestHotel.getRate_regular();
+		int bill = daysStayed * cheapestHotel.getrateWeekdayRegular();
 
 		return new Customer(cheapestHotel.hotelName, daysStayed, bill);
 	}
@@ -93,12 +95,12 @@ public class HotelReservation {
 	public static void main(String[] args) {
 
 		/**
-		 * Default Entries
+		 * Default Entries Weekly and WeekEnd Rates per day
 		 */
 		HotelReservation obj = new HotelReservation();
-		obj.addHotel("Lakewood", 110);
-		obj.addHotel("Bridgewood", 160);
-		obj.addHotel("Ridgewood", 220);
+		obj.addHotel("Lakewood", 110,90);
+		obj.addHotel("Bridgewood", 160,50);
+		obj.addHotel("Ridgewood", 220,150);
 		while(true) {
 
 		 System.out.println( "Welcome to Hotel Reservation Program" );
@@ -121,9 +123,13 @@ public class HotelReservation {
 	            System.out.print("Enter hotel name: ");
 	            String hotelName = sc.next();
 	            System.out.print("Enter regular rate of rooms: ");
-	            int rate_regular = sc.nextInt();
+	            int rateWeekdayRegular = sc.nextInt();
+	            System.out.print("Enter WeekDay rate of rooms: ");
+	            int rateWeekday = sc.nextInt();
+	            System.out.print("Enter Weekend rate of rooms: ");
+	            int rateWeekendRegular = sc.nextInt();
 
-	            obj.addHotel(hotelName, rate_regular);
+	            obj.addHotel(hotelName, rateWeekdayRegular,rateWeekendRegular);
 	            if(true)
 	            	System.out.println("Added Hotel");
 	            else
