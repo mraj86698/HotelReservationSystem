@@ -3,6 +3,7 @@ package com.java.maven.HotelReservationSystem;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.Optional;
@@ -60,37 +61,67 @@ public class HotelReservation {
 	 * @param endDate
 	 * @return
 	 */
-	public int daysRented(String start_date, String end_date) {
+	public int daysRented(Date startDate, Date endDate) {
 
-		try {
-			Date startDate = new SimpleDateFormat("DD.MM.yyyy").parse(start_date);
-			Date endDate = new SimpleDateFormat("DD.MM.yyyy").parse(end_date);
-			long time_diff = startDate.getTime() - endDate.getTime();
-			return (int) (2 + (time_diff / (1000 * 60 * 60 * 24)));
-		} catch (ParseException exception) {
-			exception.printStackTrace();
-		}
-		return 0;
+    	long time_diff = startDate.getTime() - endDate.getTime();
+    	return (int) (2+(time_diff / (1000 * 60 * 60 * 24)));
+    }
+	public int[] checkWeekdayWeekend(Date startDate, Date endDate) {
+
+
+		int weekArr[] = {0,0};
+		Calendar startCal = Calendar.getInstance();
+		startCal.setTime(startDate);
+		Calendar endCal = Calendar.getInstance();
+		endCal.setTime(endDate);
+
+		if (startCal.getTimeInMillis() < endCal.getTimeInMillis()) {
+			startCal.setTime(endDate);
+			endCal.setTime(startDate);
+		}else System.out.println("Incorrect format.");
+		do {
+			if (startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && startCal.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
+				weekArr[0]++;
+			}else weekArr[1]++;
+			startCal.add(Calendar.DAY_OF_MONTH, 1);
+		} while (startCal.getTimeInMillis() <= endCal.getTimeInMillis());
+		return weekArr;
 	}
 	/**
 	 * Ability to find the Cheapest Hotel for given date range
-	 * Input:10/09/2020,Output:11
 	 * @param start_date
 	 * @param end_date
 	 * @return
 	 */
 
-	public Customer findCheapestHotel(String start_date, String end_date) {
+	 public Customer findCheapestHotel(String start_date, String end_date) {
 
-		int daysStayed = daysRented(start_date, end_date);
-		Optional<Hotel> cheapestHotelOpt = hotelList.stream()
-				.min(Comparator.comparing(Hotel::getrateWeekdayRegular));
+	    	try {
+				Date startDate= new SimpleDateFormat("DD.MM.yyyy").parse(start_date);
+				Date endDate= new SimpleDateFormat("DD.MM.yyyy").parse(end_date);
 
-		Hotel cheapestHotel = cheapestHotelOpt.get();
-		int bill = daysStayed * cheapestHotel.getrateWeekdayRegular();
+				int daysStayed=daysRented(startDate, endDate);
+		    	int noOfWeekdays=checkWeekdayWeekend(startDate, endDate)[0];
+		    	int noOfWeekends=checkWeekdayWeekend(startDate, endDate)[1];
 
-		return new Customer(cheapestHotel.hotelName, daysStayed, bill);
-	}
+		    	for(Hotel hotel: hotelList) {
+		        	int totalBill = noOfWeekdays*hotel.rateWeekdayRegular+noOfWeekends*hotel.rateWeekendRegular;
+		        	hotel.totalBill=totalBill;
+		        }
+
+		    	Optional<Hotel> cheapestHotelOpt = hotelList.stream().min(Comparator.comparingInt(
+		    			Hotel::getTotalBill));
+
+		    	Hotel cheapestHotel = cheapestHotelOpt.get();
+		    	int bill=daysStayed*cheapestHotel.getrateWeekdayRegular();
+
+		    	return new Customer(cheapestHotel.hotelName, daysStayed, bill);
+
+	    	}catch(ParseException exception){
+				exception.printStackTrace();
+			}
+	    	return null;
+		}
 
 	public static void main(String[] args) {
 
@@ -124,8 +155,8 @@ public class HotelReservation {
 	            String hotelName = sc.next();
 	            System.out.print("Enter regular rate of rooms: ");
 	            int rateWeekdayRegular = sc.nextInt();
-	            System.out.print("Enter WeekDay rate of rooms: ");
-	            int rateWeekday = sc.nextInt();
+//	            System.out.print("Enter WeekDay rate of rooms: ");
+//	            int rateWeekday = sc.nextInt();
 	            System.out.print("Enter Weekend rate of rooms: ");
 	            int rateWeekendRegular = sc.nextInt();
 

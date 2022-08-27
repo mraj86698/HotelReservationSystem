@@ -5,6 +5,7 @@ public class Hotel {
 	public String hotelName;
 	public int rateWeekdayRegular;
 	public int rateWeekendRegular;
+	public int  totalBill=0;
 
 	/**
 	 * Create a Parameterised Constructor
@@ -26,6 +27,7 @@ public class Hotel {
 	public String toString() {
 		return "Hotel  "+hotelName+" created";
 	}
+
 
 	public void display() {
 
@@ -54,5 +56,15 @@ public class Hotel {
 
 	public void setrateWeekdayRegular(int rate_regular) {
 		this.rateWeekdayRegular = rate_regular;
+	}
+	public void setTotalBill(int totalBill) {
+		this.totalBill = totalBill;
+	}
+	public int getTotalBill() {
+		return totalBill;
+	}
+	public void showBill() {
+		// TODO Auto-generated method stub
+
 	}
 }
